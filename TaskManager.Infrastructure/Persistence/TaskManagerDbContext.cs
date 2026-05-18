@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Domain.Entities;
 
 namespace TaskManager.Infrastructure.Persistence;
 
@@ -6,5 +7,5 @@ public class TaskManagerDbContext : DbContext
 {
     public TaskManagerDbContext(DbContextOptions<TaskManagerDbContext> options) : base(options){ }
     
-    public DbSet<Task> Tasks { get; set; }
+    public DbSet<TaskItem> Tasks { get; set; }
 }
