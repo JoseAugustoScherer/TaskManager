@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Domain.Entities.Base;
 using TaskManager.Domain.Interfaces;
+using TaskManager.Infrastructure.Data;
 
-namespace TaskManager.Infrastructure.Persistence;
+namespace TaskManager.Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Dto\Request\TaskItem\" />
+      <Folder Include="Dto\Request\User\" />
+      <Folder Include="Dto\Response\TaskItem\" />
+      <Folder Include="Dto\Response\User\" />
+      <Folder Include="Interfaces\Services\TaskItem\" />
+      <Folder Include="Interfaces\Services\User\" />
+      <Folder Include="Services\TaskItem\" />
+      <Folder Include="Services\User\" />
+    </ItemGroup>
+
+</Project>

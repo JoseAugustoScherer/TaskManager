@@ -2,7 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager.Domain.Entities.Base;
 using TaskManager.Domain.Interfaces;
 using TaskManager.Domain.Interfaces.Base;
-using TaskManager.Infrastructure.Persistence;
+using TaskManager.Infrastructure.Data;
+using TaskManager.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

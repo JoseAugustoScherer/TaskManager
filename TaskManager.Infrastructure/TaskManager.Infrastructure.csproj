@@ -20,7 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations\" />
+      <Folder Include="Cryptography\" />
+      <Folder Include="Data\Mapping\" />
     </ItemGroup>
 
 </Project>
