@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Cryptography\" />
+      <Folder Include="Cryptography\Hashing\" />
       <Folder Include="Data\Mapping\" />
     </ItemGroup>
 
