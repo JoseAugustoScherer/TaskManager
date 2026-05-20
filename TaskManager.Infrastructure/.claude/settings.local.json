@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\josea\\\\RiderProjects\\\\TaskManager\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\josea\\\\RiderProjects\\\\TaskManager\" -Recurse -File | Where-Object { $_.Extension -in @\\('.sln', '.csproj', '.json'\\) } | Select-Object FullName)",
+      "PowerShell($env:CURRENT_DIRECTORY -eq \"C:\\\\Users\\\\josea\\\\RiderProjects\\\\TaskManager\\\\TaskManager.Infrastructure\")",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\josea\\\\RiderProjects\\\\TaskManager\" -Recurse -File | Where-Object { $_.Extension -in @\\('.cs', '.csproj', '.sln'\\) } | Group-Object Directory | ForEach-Object { @{ Path = $_.Name; Files = \\($_.Group | Select-Object -ExpandProperty Name -First 10\\) } })"
+    ]
+  }
+}
