@@ -3,6 +3,7 @@ using TaskManager.Domain.Entities.Base;
 using TaskManager.Domain.Interfaces;
 using TaskManager.Domain.Interfaces.Base;
 using TaskManager.Infrastructure.Data;
+using TaskManager.Infrastructure.ExceptionHandler;
 using TaskManager.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

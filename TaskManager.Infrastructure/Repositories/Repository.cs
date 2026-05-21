@@ -5,44 +5,35 @@ using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.Infrastructure.Repositories;
 
-public class Repository<T> : IRepository<T> where T : Entity
+public class Repository<T>(TaskManagerDbContext dbContext) : IRepository<T> where T : Entity
 {
-    TaskManagerDbContext _dbContext;
-
-    public Repository(TaskManagerDbContext dbContext) => _dbContext = dbContext;
-    
     public async Task CreateAsync(T entity, CancellationToken cancellationToken)
     {
-        await _dbContext.Set<T>().AddAsync(entity, cancellationToken);
+        await dbContext.Set<T>().AddAsync(entity, cancellationToken);
     }
 
     public async Task<IEnumerable<T?>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _dbContext.Set<T>().ToListAsync(cancellationToken);
+        return await dbContext.Set<T>().ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<T?>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         if(id == Guid.Empty)
-            throw new ArgumentNullException(nameof(id));
+           throw new ArgumentException("Id cannot be empty", nameof(id));
         
-        var entity = await _dbContext.Set<T>().FindAsync(id);
-        
-        if(entity == null)
-            throw new KeyNotFoundException();
-
-        return await _dbContext.Set<T>().ToListAsync(cancellationToken);
+        return await dbContext.Set<T>().FindAsync(id, cancellationToken);
     }
 
     public Task Update(T entity, CancellationToken cancellationToken)
     {
-        _dbContext.Set<T>().Update(entity);
+        dbContext.Set<T>().Update(entity);
         return Task.CompletedTask;
     }
 
     public Task Delete(T entity, CancellationToken cancellationToken)
     {
-        _dbContext.Set<T>().Remove(entity);
+        dbContext.Set<T>().Remove(entity);
         return Task.CompletedTask;
     }
 }

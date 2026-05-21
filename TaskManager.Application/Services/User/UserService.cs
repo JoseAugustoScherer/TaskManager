@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using TaskManager.Application.Dto.Request.User;
 using TaskManager.Application.Dto.Response.User;
 using TaskManager.Application.Interfaces;
@@ -20,47 +21,37 @@ public class UserService(
     {
         var validationResult = await new UserRequestDtoValidation().ValidateAsync(requestDto, cancellationToken);
         
-        try
+        if (!validationResult.IsValid)
         {
-            if (!validationResult.IsValid)
-            {
-                var errors = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+            var errors = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
 
-                return ResponseViewModel<UserResponseDto>.Fail(
-                    errors, 
-                    400
-                );
-            }
-
-            var user = await repository.FindByEmailAsync(requestDto.Email, cancellationToken);
-
-            if (user is not null)
-                return ResponseViewModel<UserResponseDto>.Fail(
-                    "User already exists",
-                    409
-                );
-
-            var passwordHash = hashService.Hash(requestDto.Password);
-            
-            var newUser = User.Create(
-                requestDto.Name, 
-                requestDto.Email, 
-                passwordHash);
-            
-            await repository.CreateAsync(newUser, cancellationToken);
-            
-            await unitOfWork.CommitAsync(cancellationToken);
-            
-            var response = new UserResponseDto(newUser.Id, newUser.Name, newUser.Email);
-
-            return ResponseViewModel<UserResponseDto>.Ok(response);
-        }
-        catch (Exception e)
-        {
             return ResponseViewModel<UserResponseDto>.Fail(
-                $"Failed to create user: {e.Message}",
-                500
+                errors,
+                400
             );
         }
+
+        var user = await repository.FindByEmailAsync(requestDto.Email, cancellationToken);
+
+        if (user is not null)
+            return ResponseViewModel<UserResponseDto>.Fail(
+                "User already exists",
+                409
+            );
+
+        var passwordHash = hashService.Hash(requestDto.Password);
+
+        var newUser = User.Create(
+            requestDto.Name,
+            requestDto.Email,
+            passwordHash);
+
+        await repository.CreateAsync(newUser, cancellationToken);
+
+        await unitOfWork.CommitAsync(cancellationToken);
+
+        var response = new UserResponseDto(newUser.Id, newUser.Name, newUser.Email);
+
+        return ResponseViewModel<UserResponseDto>.Ok(response);
     }
 }
