@@ -10,14 +10,16 @@
       <Folder Include="Dto\Request\TaskItem\" />
       <Folder Include="Dto\Response\TaskItem\" />
       <Folder Include="Interfaces\Services\TaskItem\" />
-      <Folder Include="Interfaces\Services\User\" />
       <Folder Include="Services\TaskItem\" />
-      <Folder Include="Services\User\" />
       <Folder Include="Validators\TaskItem\" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="12.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TaskManager.Domain\TaskManager.Domain.csproj" />
     </ItemGroup>
 
 </Project>
