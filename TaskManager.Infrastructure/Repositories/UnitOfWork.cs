@@ -5,17 +5,17 @@ using TaskManager.Infrastructure.Data;
 
 namespace TaskManager.Infrastructure.Repositories;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(TaskManagerDbContext dbContext) : IUnitOfWork
 {
-    TaskManagerDbContext _dbContext;
-
-    public UnitOfWork(TaskManagerDbContext dbContext) => _dbContext = dbContext;
-    
-    public Task<int> CommitAsync(CancellationToken cancellationToken) => _dbContext.SaveChangesAsync(cancellationToken);
+    public Task<int> CommitAsync(CancellationToken cancellationToken)
+    {
+        UpdateAuditableEntities();
+        return dbContext.SaveChangesAsync(cancellationToken);
+    }
 
     private void UpdateAuditableEntities()
     {
-        var entries = _dbContext.ChangeTracker.Entries<Entity>();
+        var entries = dbContext.ChangeTracker.Entries<Entity>();
 
         foreach (var entry in entries)
         {

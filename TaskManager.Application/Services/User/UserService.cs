@@ -49,7 +49,7 @@ public class UserService(
         await repository.CreateAsync(newUser, cancellationToken);
 
         await unitOfWork.CommitAsync(cancellationToken);
-
+        
         var response = new UserResponseDto(newUser.Id, newUser.Name, newUser.Email);
 
         return ResponseViewModel<UserResponseDto>.Ok(response);
