@@ -54,4 +54,40 @@ public class UserService(
 
         return ResponseViewModel<UserResponseDto>.Ok(response);
     }
+
+    public async Task<ResponseViewModel<UserResponseDto>> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var user = await repository.GetByIdAsync(userId, cancellationToken);
+        
+        if(user is null)
+            return ResponseViewModel<UserResponseDto>.Fail(
+                $"User with ID {userId} don't exists",
+                404
+            );
+
+        var response = new UserResponseDto(user.Id, user.Name, user.Email);
+        
+        return ResponseViewModel<UserResponseDto>.Ok(response);
+    }
+
+    public Task<ResponseViewModel<UserResponseDto>> UpdateUserAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ResponseViewModel<UserResponseDto>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ResponseViewModel<UserResponseDto>> GetUserByEmailAsync(string userEmail,
+        CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ResponseViewModel<IEnumerable<UserResponseDto>>> GetAllUsersAsync(CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }
