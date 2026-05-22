@@ -61,11 +61,11 @@ public class ResponseViewModel<TValue> : ResponseViewModel
 
     public ResponseViewModel(TValue value, int statusCode)
     {
-        Data = value;
+        Value = value;
         StatusCode = statusCode;
     }
 
-    public TValue Data { get; }
+    public TValue Value { get; }
 
     public static ResponseViewModel<TValue> Set(TValue value, int statusCode) =>
         new(value, statusCode);
