@@ -25,4 +25,12 @@ public class UserController (
         
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUsersAsync(CancellationToken cancellationToken)
+    {
+        var result = await userService.GetAllUsersAsync(cancellationToken);
+        
+        return Ok(result.Value);
+    }
 }
