@@ -71,7 +71,8 @@ public class UserService(
         return ResponseViewModel<UserResponseDto?>.Ok(response);
     }
 
-    public Task<ResponseViewModel<UserResponseDto?>> UpdateUserAsync(Guid userId, CancellationToken cancellationToken)
+    public Task<ResponseViewModel<UserResponseDto?>> UpdateUserAsync(Guid userId, UpdateUserRequestDto request,
+        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

@@ -33,4 +33,13 @@ public class UserController (
         
         return Ok(result.Value);
     }
+
+    [HttpPut("update/{userId:guid}")]
+    public async Task<IActionResult> UpdateUserAsync(Guid userId, UpdateUserRequestDto request,
+        CancellationToken cancellationToken)
+    {
+        var result = await userService.UpdateUserAsync(userId, request, cancellationToken);
+        
+        return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
+    }
 }
