@@ -34,7 +34,7 @@ public class UserController (
         return Ok(result.Value);
     }
 
-    [HttpPut("update/{userId:guid}")]
+    [HttpPatch("update/{userId:guid}")]
     public async Task<IActionResult> UpdateUserAsync(Guid userId, UpdateUserRequestDto request,
         CancellationToken cancellationToken)
     {

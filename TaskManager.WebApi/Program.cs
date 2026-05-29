@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager.Application.Interfaces;
 using TaskManager.Application.Interfaces.Services.User;
 using TaskManager.Application.Services.User;
-using TaskManager.Domain.Entities.Base;
 using TaskManager.Domain.Interfaces;
 using TaskManager.Domain.Interfaces.Base;
 using TaskManager.Infrastructure.Data;
@@ -36,6 +35,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<TaskManagerDbContext>();
+    db.Database.Migrate();
+}
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 

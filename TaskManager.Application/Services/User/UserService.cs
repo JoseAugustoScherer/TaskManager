@@ -17,15 +17,15 @@ public class UserService(
     IHashService hashService
 ) : IUserService
 {
-    public async Task<ResponseViewModel<UserResponseDto>> CreateUserAsync(UserRequestDto requestDto, CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<CreateUserResponseDto>> CreateUserAsync(UserRequestDto requestDto, CancellationToken cancellationToken)
     {
-        var validationResult = await new UserRequestDtoValidation().ValidateAsync(requestDto, cancellationToken);
+        var validationResult = await new UserCreateRequestDtoValidation().ValidateAsync(requestDto, cancellationToken);
         
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
 
-            return ResponseViewModel<UserResponseDto>.Fail(
+            return ResponseViewModel<CreateUserResponseDto>.Fail(
                 errors,
                 400
             );
@@ -34,7 +34,7 @@ public class UserService(
         var user = await repository.FindByEmailAsync(requestDto.Email, cancellationToken);
 
         if (user is not null)
-            return ResponseViewModel<UserResponseDto>.Fail(
+            return ResponseViewModel<CreateUserResponseDto>.Fail(
                 "User already exists",
                 409
             );
@@ -50,51 +50,97 @@ public class UserService(
 
         await unitOfWork.CommitAsync(cancellationToken);
         
-        var response = new UserResponseDto(newUser.Id, newUser.Name, newUser.Email);
+        var response = new CreateUserResponseDto(newUser.Id, newUser.Name, newUser.Email);
 
-        return ResponseViewModel<UserResponseDto>.Ok(response);
+        return ResponseViewModel<CreateUserResponseDto>.Ok(response);
     }
 
-    public async Task<ResponseViewModel<UserResponseDto?>> GetUserByIdAsync(Guid userId,
+    public async Task<ResponseViewModel<CreateUserResponseDto?>> GetUserByIdAsync(Guid userId,
         CancellationToken cancellationToken)
     {
         var user = await repository.GetByIdAsync(userId, cancellationToken);
         
         if(user is null)
-            return ResponseViewModel<UserResponseDto?>.Fail(
+            return ResponseViewModel<CreateUserResponseDto?>.Fail(
                 $"User with ID {userId} don't exists",
                 404
             );
 
-        var response = new UserResponseDto(user.Id, user.Name, user.Email);
+        var response = new CreateUserResponseDto(user.Id, user.Name, user.Email);
         
-        return ResponseViewModel<UserResponseDto?>.Ok(response);
+        return ResponseViewModel<CreateUserResponseDto?>.Ok(response);
     }
 
-    public Task<ResponseViewModel<UserResponseDto?>> UpdateUserAsync(Guid userId, UpdateUserRequestDto request,
+    public async Task<ResponseViewModel<UpdateUserResponseDto>> UpdateUserAsync(Guid userId, UpdateUserRequestDto requestDto,
+        CancellationToken cancellationToken)
+    {
+        var validationResult = await new UserUpdateRequestDtoValidation().ValidateAsync(requestDto, cancellationToken);
+        
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
+
+            return ResponseViewModel<UpdateUserResponseDto>.Fail(
+                errors,
+                400
+            );
+        }
+        
+        if (requestDto.Name is null && requestDto.Email is null)                                                                                                                                                                          
+            return ResponseViewModel<UpdateUserResponseDto>.Fail(
+                "At least one field must be provided",
+                400
+            );
+        
+        var user = await repository.GetByIdAsync(userId, cancellationToken);
+        
+        if(user is null)
+            return ResponseViewModel<UpdateUserResponseDto>.Fail(
+                $"User with ID {userId} don't exists",
+                404
+            );
+        
+        if (requestDto.Email is not null)                                                                                                                                                                                                 
+        {                                                                                                                                                                                                                               
+            var email = await repository.FindByEmailAsync(requestDto.Email, cancellationToken);                                                                                                                                           
+            if (email is not null && email.Id != userId)                                                                                                                                                                                  
+                return ResponseViewModel<UpdateUserResponseDto>.Fail("Email already exists", 409);
+        } 
+
+        if (requestDto.Name is not null)
+            user.UpdateName(requestDto.Name);
+        if (requestDto.Email is not null)
+            user.UpdateEmail(requestDto.Email);
+        
+        await repository.UpdateAsync(user, cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
+
+        return ResponseViewModel<UpdateUserResponseDto>.Ok(
+            new UpdateUserResponseDto(
+                Name: user.Name,
+                Email: user.Email
+            )
+        );
+    }
+
+    public Task<ResponseViewModel<CreateUserResponseDto?>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ResponseViewModel<CreateUserResponseDto?>> GetUserByEmailAsync(string userEmail,
         CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ResponseViewModel<UserResponseDto?>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ResponseViewModel<UserResponseDto?>> GetUserByEmailAsync(string userEmail,
-        CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<ResponseViewModel<IEnumerable<UserResponseDto>>> GetAllUsersAsync(
+    public async Task<ResponseViewModel<IEnumerable<CreateUserResponseDto>>> GetAllUsersAsync(
         CancellationToken cancellationToken)
     {
         var users = await repository.GetAllAsync(cancellationToken);
         
-        var userDto = users.Select(u => new UserResponseDto(u.Id, u.Name, u.Email)).ToList();
+        var userDto = users.Select(u => new CreateUserResponseDto(u.Id, u.Name, u.Email)).ToList();
         
-        return ResponseViewModel<IEnumerable<UserResponseDto>>.Ok(userDto);
+        return ResponseViewModel<IEnumerable<CreateUserResponseDto>>.Ok(userDto);
     }
 }

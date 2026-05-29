@@ -25,13 +25,13 @@ public class Repository<T>(TaskManagerDbContext dbContext) : IRepository<T> wher
         return await dbContext.Set<T>().FindAsync(id, cancellationToken);
     }
 
-    public Task Update(T entity, CancellationToken cancellationToken)
+    public Task UpdateAsync(T entity, CancellationToken cancellationToken)
     {
         dbContext.Set<T>().Update(entity);
         return Task.CompletedTask;
     }
 
-    public Task Delete(T entity, CancellationToken cancellationToken)
+    public Task DeleteAsync(T entity, CancellationToken cancellationToken)
     {
         dbContext.Set<T>().Remove(entity);
         return Task.CompletedTask;

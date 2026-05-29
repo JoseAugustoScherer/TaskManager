@@ -20,5 +20,7 @@ public class User : Entity
         => new (name,email, password);
     
     // Class Methods
+    public void UpdateName(string newName) => Name = newName;
+    public void UpdateEmail(string newEmail) => Email = newEmail;
     public void UpdatePassword(string newPassword) => Password = newPassword;
 }

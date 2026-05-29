@@ -3,9 +3,9 @@ using TaskManager.Application.Dto.Request.User;
 
 namespace TaskManager.Application.Validators.User;
 
-internal sealed class UserRequestDtoValidation : AbstractValidator<UserRequestDto>
+internal sealed class UserCreateRequestDtoValidation : AbstractValidator<UserRequestDto>
 {
-    public UserRequestDtoValidation()
+    public UserCreateRequestDtoValidation()
     {
         RuleFor(x => x.Name)
             .NotNull().NotEmpty().WithMessage("Name is required");
