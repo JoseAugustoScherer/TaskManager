@@ -2,7 +2,7 @@ using TaskManager.Domain.Entities.Base;
 
 namespace TaskManager.Domain.Entities;
 
-public class User : Entity
+public class User : SoftDeleteEntity
 {
     public string Name { get; private set; }
     public string Email { get; private set; }
