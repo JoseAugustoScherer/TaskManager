@@ -26,6 +26,13 @@ public class UserController (
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
     }
 
+    [HttpGet("email/{email}")]
+    public async Task<IActionResult> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+    {
+        var result = await userService.GetUserByEmailAsync(email, cancellationToken);
+        return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetUsersAsync(CancellationToken cancellationToken)
     {

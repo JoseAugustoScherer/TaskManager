@@ -128,19 +128,28 @@ public class UserService(
         throw new NotImplementedException();
     }
 
-    public Task<ResponseViewModel<CreateUserResponseDto?>> GetUserByEmailAsync(string userEmail,
+    public async Task<ResponseViewModel<UserResponseDto?>> GetUserByEmailAsync(string userEmail,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await repository.FindByEmailAsync(userEmail, cancellationToken);
+        if (user is null)
+            return ResponseViewModel<UserResponseDto?>.Fail(
+                "User not found",
+                404
+            );
+        
+        var response = new UserResponseDto(user.Id, user.Name, user.Email);
+        
+        return ResponseViewModel<UserResponseDto?>.Ok(response);
     }
 
-    public async Task<ResponseViewModel<IEnumerable<CreateUserResponseDto>>> GetAllUsersAsync(
+    public async Task<ResponseViewModel<IEnumerable<UserResponseDto>>> GetAllUsersAsync(
         CancellationToken cancellationToken)
     {
         var users = await repository.GetAllAsync(cancellationToken);
         
-        var userDto = users.Select(u => new CreateUserResponseDto(u.Id, u.Name, u.Email)).ToList();
+        var userDto = users.Select(u => new UserResponseDto(u.Id, u.Name, u.Email)).ToList();
         
-        return ResponseViewModel<IEnumerable<CreateUserResponseDto>>.Ok(userDto);
+        return ResponseViewModel<IEnumerable<UserResponseDto>>.Ok(userDto);
     }
 }

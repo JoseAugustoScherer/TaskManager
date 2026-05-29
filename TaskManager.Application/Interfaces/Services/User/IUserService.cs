@@ -11,6 +11,6 @@ public interface IUserService
     Task<ResponseViewModel<CreateUserResponseDto?>> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
     Task<ResponseViewModel<UpdateUserResponseDto>> UpdateUserAsync(Guid userId, UpdateUserRequestDto requestDto, CancellationToken cancellationToken);
     Task<ResponseViewModel<CreateUserResponseDto?>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken);
-    Task<ResponseViewModel<CreateUserResponseDto?>> GetUserByEmailAsync(string userEmail, CancellationToken cancellationToken);
-    Task<ResponseViewModel<IEnumerable<CreateUserResponseDto>>> GetAllUsersAsync(CancellationToken cancellationToken);
+    Task<ResponseViewModel<UserResponseDto?>> GetUserByEmailAsync(string userEmail, CancellationToken cancellationToken);
+    Task<ResponseViewModel<IEnumerable<UserResponseDto>>> GetAllUsersAsync(CancellationToken cancellationToken);
 }
