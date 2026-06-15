@@ -6,6 +6,7 @@ using TaskManager.Domain.Interfaces;
 using TaskManager.Domain.Interfaces.Base;
 using TaskManager.Infrastructure.Data;
 using TaskManager.Infrastructure.ExceptionHandler;
+using TaskManager.Infrastructure.Persistence;
 using TaskManager.Infrastructure.Repositories;
 using TaskManager.Infrastructure.Services.Password;
 
@@ -42,9 +43,9 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
+// Configure the HTTP request pipeline.
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
