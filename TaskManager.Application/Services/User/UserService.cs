@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using TaskManager.Application.Dto.Request.User;
 using TaskManager.Application.Dto.Response.User;
 using TaskManager.Application.Interfaces;
@@ -123,9 +122,23 @@ public class UserService(
         );
     }
 
-    public Task<ResponseViewModel<CreateUserResponseDto?>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<bool>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await repository.GetByIdAsync(userId, cancellationToken);
+        
+        if (user is null)
+            return ResponseViewModel<bool>.Fail(
+                $"User with ID {userId} not found",
+                404
+            );
+        
+        user.Delete();
+        
+        await repository.UpdateAsync(user, cancellationToken);
+        
+        await unitOfWork.CommitAsync(cancellationToken);
+        
+        return ResponseViewModel<bool>.Ok(true);
     }
 
     public async Task<ResponseViewModel<UserResponseDto?>> GetUserByEmailAsync(string userEmail,

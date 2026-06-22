@@ -49,4 +49,11 @@ public class UserController (
         
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
     }
+
+    [HttpDelete("{userId:guid}")]
+    public async Task<IActionResult> DeleteUserAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var result = await userService.DeleteUserAsync(userId, cancellationToken);
+        return result.IsFailure ? StatusCode(result.StatusCode, result) : NoContent();
+    }
 }

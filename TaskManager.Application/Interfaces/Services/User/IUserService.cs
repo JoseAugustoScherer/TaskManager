@@ -10,7 +10,7 @@ public interface IUserService
     Task<ResponseViewModel<CreateUserResponseDto>> CreateUserAsync(UserRequestDto requestDto, CancellationToken cancellationToken);
     Task<ResponseViewModel<CreateUserResponseDto?>> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
     Task<ResponseViewModel<UpdateUserResponseDto>> UpdateUserAsync(Guid userId, UpdateUserRequestDto requestDto, CancellationToken cancellationToken);
-    Task<ResponseViewModel<CreateUserResponseDto?>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken);
+    Task<ResponseViewModel<bool>> DeleteUserAsync(Guid userId, CancellationToken cancellationToken);
     Task<ResponseViewModel<UserResponseDto?>> GetUserByEmailAsync(string userEmail, CancellationToken cancellationToken);
     Task<ResponseViewModel<IEnumerable<UserResponseDto>>> GetAllUsersAsync(CancellationToken cancellationToken);
 }
