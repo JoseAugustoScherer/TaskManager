@@ -1,3 +1,3 @@
 namespace TaskManager.Application.Dto.Request.TaskItem;
 
-public abstract record TaskItemByStatusRequestDto(TaskStatus Status);
+public sealed record TaskItemByStatusRequestDto(TaskStatus Status);

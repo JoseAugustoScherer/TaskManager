@@ -53,28 +53,89 @@ public class TaskItemService(
         return ResponseViewModel<CreateTaskItemResponseDto>.Ok(response);
     }
 
-    public Task<ResponseViewModel<TaskItemResponseDto?>> GetTaskItemByIdAsync(Guid taskItemId, CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<TaskItemResponseDto?>> GetTaskItemByIdAsync(Guid taskItemId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var taskItem = await repository.GetTaskItemByIdWithOwnerAsync(taskItemId, cancellationToken);
+
+        if (taskItem is null)
+            return ResponseViewModel<TaskItemResponseDto?>.Fail(
+                "Task item not found",
+                404
+            );
+        
+        var response = new TaskItemResponseDto(taskItem.Id, taskItem.Title, taskItem.Description, taskItem.Status, taskItem.Owner.Id);
+        
+        return ResponseViewModel<TaskItemResponseDto?>.Ok(response);
     }
 
-    public Task<ResponseViewModel<UpdateTaskItemResponseDto>> UpdateTaskItemAsync(Guid taskItemId, UpdateTaskItemRequestDto requestDto, CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<UpdateTaskItemResponseDto>> UpdateTaskItemAsync(Guid taskItemId, UpdateTaskItemRequestDto requestDto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var validationResult = await new TaskItemUpdateRequestDtoValidation().ValidateAsync(requestDto, cancellationToken);
+
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
+
+            return ResponseViewModel<UpdateTaskItemResponseDto>.Fail(
+                errors,
+                400
+            );
+        }
+        
+        var taskItem = await repository.GetByIdAsync(taskItemId, cancellationToken);
+
+        if (taskItem is null)
+            return ResponseViewModel<UpdateTaskItemResponseDto>.Fail(
+                "Task item not found",
+                404
+            );
+        
+        taskItem.UpdateStatus(requestDto.Status);
+        
+        await repository.UpdateAsync(taskItem, cancellationToken);
+        
+        await unitOfWork.CommitAsync(cancellationToken);
+        
+        return ResponseViewModel<UpdateTaskItemResponseDto>.Ok(
+            new UpdateTaskItemResponseDto(
+                Id: taskItemId,
+                Status: taskItem.Status
+            )
+        );
     }
 
-    public Task<ResponseViewModel<bool>> DeleteTaskItemByIdAsync(Guid taskItemId, CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<bool>> DeleteTaskItemByIdAsync(Guid taskItemId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var taskItem = await repository.GetByIdAsync(taskItemId, cancellationToken);
+
+        if (taskItem is null)
+            return ResponseViewModel<bool>.Fail(
+                "Task item not found",
+                404
+            );
+        
+        await repository.DeleteAsync(taskItem, cancellationToken);
+        
+        await unitOfWork.CommitAsync(cancellationToken);
+        
+        return ResponseViewModel<bool>.Ok(true);
     }
 
-    public Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetAllTaskItemsAsync(CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetAllTaskItemsAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var taskItems = await repository.GetAllTaskItemWithOwnerAsync(cancellationToken);
+        
+        var taskDto = taskItems.Select(t => new TaskItemResponseDto(t.Id, t.Title, t.Description, t.Status, t.Owner.Id));
+        
+        return ResponseViewModel<IEnumerable<TaskItemResponseDto>>.Ok(taskDto);
     }
 
-    public Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetTaskItemsByStatusAsync(TaskItemByStatusRequestDto requestDto, CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetTaskItemsByStatusAsync(TaskItemByStatusRequestDto requestDto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var taskItems = await repository.GetTaskItemsByStatusWithOwnerAsync(requestDto.Status, cancellationToken);
+        
+        var taskDto = taskItems.Select(t => new TaskItemResponseDto(t.Id, t.Title, t.Description, t.Status, t.Owner.Id));
+        
+        return ResponseViewModel<IEnumerable<TaskItemResponseDto>>.Ok(taskDto);
     }
 }
