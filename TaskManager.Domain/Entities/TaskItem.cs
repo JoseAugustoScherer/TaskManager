@@ -21,7 +21,7 @@ public class TaskItem : Entity
         => new (TaskStatus.Created, title, description, owner);
     
     // Class Methods
-    public void UpodateStatus(TaskStatus newStatus) => Status = newStatus;
+    public void UpdateStatus(TaskStatus newStatus) => Status = newStatus;
     public void UpdateTitle(string title) => Title = title;
     public void UpdateDescription(string description) => Description = description;
 }

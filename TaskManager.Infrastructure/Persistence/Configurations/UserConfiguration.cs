@@ -10,7 +10,7 @@ public class UserConfiguration : SoftDeleteEntityConfiguration<User>
     {
         base.Configure(builder);
         
-        builder.ToTable("users");
+        builder.ToTable("Users");
         
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)

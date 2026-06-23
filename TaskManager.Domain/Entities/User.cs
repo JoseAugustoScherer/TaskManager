@@ -7,7 +7,8 @@ public class User : SoftDeleteEntity
     public string Name { get; private set; }
     public string Email { get; private set; }
     public string Password { get; private set; }
-
+    public ICollection<TaskItem> Tasks { get; private set; } =  new List<TaskItem>();
+    
     // EF constructor
     private User(){}
     
