@@ -7,11 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Dto\Request\TaskItem\" />
-      <Folder Include="Dto\Response\TaskItem\" />
       <Folder Include="Interfaces\Services\TaskItem\" />
       <Folder Include="Services\TaskItem\" />
-      <Folder Include="Validators\TaskItem\" />
     </ItemGroup>
 
     <ItemGroup>
