@@ -8,7 +8,7 @@ using TaskManager.Domain.Interfaces;
 
 namespace TaskManager.Application.Services.User;
 
-using User =  TaskManager.Domain.Entities.User;
+using User = TaskManager.Domain.Entities.User;
 
 public class UserService(
     IUserRepository repository,
@@ -54,20 +54,20 @@ public class UserService(
         return ResponseViewModel<CreateUserResponseDto>.Ok(response);
     }
 
-    public async Task<ResponseViewModel<CreateUserResponseDto?>> GetUserByIdAsync(Guid userId,
+    public async Task<ResponseViewModel<UserResponseDto?>> GetUserByIdAsync(Guid userId,
         CancellationToken cancellationToken)
     {
         var user = await repository.GetByIdAsync(userId, cancellationToken);
         
         if(user is null)
-            return ResponseViewModel<CreateUserResponseDto?>.Fail(
+            return ResponseViewModel<UserResponseDto?>.Fail(
                 $"User with ID {userId} don't exists",
                 404
             );
 
-        var response = new CreateUserResponseDto(user.Id, user.Name, user.Email);
+        var response = new UserResponseDto(user.Id, user.Name, user.Email);
         
-        return ResponseViewModel<CreateUserResponseDto?>.Ok(response);
+        return ResponseViewModel<UserResponseDto?>.Ok(response);
     }
 
     public async Task<ResponseViewModel<UpdateUserResponseDto>> UpdateUserAsync(Guid userId, UpdateUserRequestDto requestDto,
