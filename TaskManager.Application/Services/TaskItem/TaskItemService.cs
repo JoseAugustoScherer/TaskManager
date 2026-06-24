@@ -41,6 +41,7 @@ public class TaskItemService(
         var newTask = TaskItem.Create(
             requestDto.Title,
             requestDto.Description,
+            requestDto.Status,
             owner
         );
         

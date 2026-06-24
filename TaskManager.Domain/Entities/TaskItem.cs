@@ -13,12 +13,12 @@ public class TaskItem : Entity
     private TaskItem(){}
     
     // Primary Constructor
-    public TaskItem(TaskStatus status, string title, string? description, User owner)
+    public TaskItem(string title, string? description, TaskStatus status, User owner)
         => (Status, Title, Description, Owner) = (status, title, description, owner);
     
     // Factory
-    public static TaskItem Create(string title, string? description, User owner)
-        => new (TaskStatus.Created, title, description, owner);
+    public static TaskItem Create(string title, string? description, TaskStatus status, User owner)
+        => new (title, description, status, owner);
     
     // Class Methods
     public void UpdateStatus(TaskStatus newStatus) => Status = newStatus;

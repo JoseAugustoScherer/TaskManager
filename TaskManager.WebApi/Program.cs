@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Application.Interfaces;
+using TaskManager.Application.Interfaces.Services.TaskItem;
 using TaskManager.Application.Interfaces.Services.User;
+using TaskManager.Application.Services.TaskItem;
 using TaskManager.Application.Services.User;
 using TaskManager.Domain.Interfaces;
 using TaskManager.Domain.Interfaces.Base;
@@ -29,6 +31,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IHashService, PasswordHashing>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
+builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
