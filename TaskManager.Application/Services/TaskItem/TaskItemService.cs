@@ -130,9 +130,10 @@ public class TaskItemService(
         return ResponseViewModel<IEnumerable<TaskItemResponseDto>>.Ok(taskDto);
     }
 
-    public async Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetTaskItemsByStatusAsync(TaskItemByStatusRequestDto requestDto, CancellationToken cancellationToken)
+    public async Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetTaskItemsByStatusAsync(
+        TaskStatus taskStatus, CancellationToken cancellationToken)
     {
-        var taskItems = await repository.GetTaskItemsByStatusWithOwnerAsync(requestDto.Status, cancellationToken);
+        var taskItems = await repository.GetTaskItemsByStatusWithOwnerAsync(taskStatus, cancellationToken);
         
         var taskDto = taskItems.Select(t => new TaskItemResponseDto(t.Id, t.Title, t.Description, t.Status, t.Owner.Id));
         

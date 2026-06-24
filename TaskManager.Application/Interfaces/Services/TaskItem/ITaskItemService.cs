@@ -11,6 +11,6 @@ public interface ITaskItemService
     Task<ResponseViewModel<UpdateTaskItemResponseDto>> UpdateTaskItemAsync(Guid taskItemId, UpdateTaskItemRequestDto requestDto, CancellationToken cancellationToken);
     Task<ResponseViewModel<bool>> DeleteTaskItemByIdAsync(Guid taskItemId, CancellationToken cancellationToken);
     Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetAllTaskItemsAsync(CancellationToken cancellationToken);
-    Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetTaskItemsByStatusAsync(TaskItemByStatusRequestDto requestDto, CancellationToken cancellationToken);
+    Task<ResponseViewModel<IEnumerable<TaskItemResponseDto>>> GetTaskItemsByStatusAsync(TaskStatus taskStatus, CancellationToken cancellationToken);
 
 }
