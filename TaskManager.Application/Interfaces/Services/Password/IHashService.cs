@@ -1,4 +1,4 @@
-namespace TaskManager.Application.Interfaces;
+namespace TaskManager.Application.Interfaces.Services.Password;
 
 public interface IHashService
 {

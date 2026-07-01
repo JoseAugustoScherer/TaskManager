@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using TaskManager.Application.Interfaces;
+using TaskManager.Application.Interfaces.Services.Password;
 
 namespace TaskManager.Infrastructure.Services.Password;
 

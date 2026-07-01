@@ -1,6 +1,6 @@
 using TaskManager.Application.Dto.Request.User;
 using TaskManager.Application.Dto.Response.User;
-using TaskManager.Application.Interfaces;
+using TaskManager.Application.Interfaces.Services.Password;
 using TaskManager.Application.Interfaces.Services.User;
 using TaskManager.Application.Validators.User;
 using TaskManager.Application.ViewModel;

@@ -1,12 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using TaskManager.Application.Interfaces;
+using TaskManager.Application.Interfaces.Services.Password;
 using TaskManager.Application.Interfaces.Services.TaskItem;
 using TaskManager.Application.Interfaces.Services.User;
 using TaskManager.Application.Services.TaskItem;
 using TaskManager.Application.Services.User;
 using TaskManager.Domain.Interfaces;
 using TaskManager.Domain.Interfaces.Base;
-using TaskManager.Infrastructure.Data;
 using TaskManager.Infrastructure.ExceptionHandler;
 using TaskManager.Infrastructure.Persistence;
 using TaskManager.Infrastructure.Repositories;

@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using TaskManager.Domain.Entities;
 using TaskManager.Domain.Interfaces;
-using TaskManager.Infrastructure.Data;
 using TaskManager.Infrastructure.Persistence;
 
 namespace TaskManager.Infrastructure.Repositories;
