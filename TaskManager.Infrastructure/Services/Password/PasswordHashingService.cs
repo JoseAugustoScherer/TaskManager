@@ -3,7 +3,7 @@ using TaskManager.Application.Interfaces.Services.Password;
 
 namespace TaskManager.Infrastructure.Services.Password;
 
-public class PasswordHashing : IHashService
+public class PasswordHashingService : IHashService
 {
     private const int SaltSize = 16;
     private const int HashSize = 32;

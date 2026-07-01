@@ -1,20 +1,25 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Dto.Request.TaskItem;
 using TaskManager.Application.Interfaces.Services.TaskItem;
 
 namespace TaskManager.WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class TaskItemController(
     ITaskItemService taskItemService
 ) : ControllerBase
 {
-    [HttpPost("{ownerId:guid}")]
-    public async Task<IActionResult> CreateTaskItem(Guid ownerId, TaskItemRequestDto requestDto, CancellationToken cancellationToken)
+    [HttpPost]
+    public async Task<IActionResult> CreateTaskItem(TaskItemRequestDto requestDto, CancellationToken cancellationToken)
     {
-        var result = await taskItemService.CreateTaskItemAsync(ownerId ,requestDto, cancellationToken);
-        
+        var ownerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        var result = await taskItemService.CreateTaskItemAsync(ownerId, requestDto, cancellationToken);
+
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Created($"/taskItem/{result.Value.Id}", result.Value);
     }
 

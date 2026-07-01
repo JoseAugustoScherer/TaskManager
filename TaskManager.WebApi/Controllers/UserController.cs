@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Dto.Request.User;
 using TaskManager.Application.Interfaces.Services.User;
@@ -18,6 +19,7 @@ public class UserController (
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Created($"/user/{result.Value.Id}", result.Value);
     }
 
+    [Authorize]
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
@@ -26,6 +28,7 @@ public class UserController (
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
     }
 
+    [Authorize]
     [HttpGet("email/{email}")]
     public async Task<IActionResult> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
@@ -33,6 +36,7 @@ public class UserController (
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetUsersAsync(CancellationToken cancellationToken)
     {
@@ -41,6 +45,7 @@ public class UserController (
         return Ok(result.Value);
     }
 
+    [Authorize]
     [HttpPatch("update/{userId:guid}")]
     public async Task<IActionResult> UpdateUserAsync(Guid userId, UpdateUserRequestDto request,
         CancellationToken cancellationToken)
@@ -50,6 +55,7 @@ public class UserController (
         return result.IsFailure ? StatusCode(result.StatusCode, result) : Ok(result.Value);
     }
 
+    [Authorize]
     [HttpDelete("{userId:guid}")]
     public async Task<IActionResult> DeleteUserAsync(Guid userId, CancellationToken cancellationToken)
     {
